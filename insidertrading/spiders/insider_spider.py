@@ -25,7 +25,7 @@ class InsiderSpiderSpider(scrapy.Spider):
             i_companies['insider_trades_weblink'] = "https://www.finanzen.net/insidertrades/"+ modified_path
 
             
-            yield scrapy.Request( i_companies['insider_trades_weblink'],callback=self.insider_data,meta={'c_name':i_companies['company_name']})
+            #yield scrapy.Request( i_companies['insider_trades_weblink'],callback=self.insider_data,meta={'company_name':i_companies['company_name']})
             #yield scrapy.Request('https://www.finanzen.net/insidertrades/airbus',callback=self.insider_data)
             
             yield i_companies
@@ -41,7 +41,7 @@ class InsiderSpiderSpider(scrapy.Spider):
         l=[]
         for row in rows:
             
-            i_inside_trade['c_name']=response.meta.get('c_name')
+            i_inside_trade['company_name']=response.meta.get('company_name')
             i_inside_trade['date']=row.xpath('td[1]//text()').extract_first()
             i_inside_trade['trader']=row.xpath('td[2]//text()').extract_first()
             i_inside_trade['quantity']=row.xpath('td[3]//text()').extract_first()

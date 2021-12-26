@@ -14,7 +14,7 @@ class CompaniesItem(scrapy.Item):
     insider_trades_weblink=scrapy.Field()
 
 class InsiderTradesItem(scrapy.Item):
-    c_name=scrapy.Field()
+    company_id=scrapy.Field()
     date=scrapy.Field()
     trader=scrapy.Field()
     quantity=scrapy.Field()

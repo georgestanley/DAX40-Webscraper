@@ -1,0 +1,8 @@
+#other sql scripts
+
+CREATE TABLE 'script_executions' (
+  'last_executed_at' timestamp NULL DEFAULT NULL,
+  'spider' text,
+  'run_id' int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY ('run_id')
+);

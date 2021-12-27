@@ -15,6 +15,7 @@ class InsidertradingPipeline:
     def __init__(self) -> None:
         self.create_connection()
         self.create_table()
+        self.post_processing()
 
         
     def create_connection(self):
@@ -81,4 +82,12 @@ class InsidertradingPipeline:
             item['short_val'],
             item['type']
         ) )
+        self.conn.commit()
+    
+    def post_processing(self):
+        # use this code block for cleaning up null or junk data
+        self.curr.execute("""insert into insider_trades.script_executions(last_executed_at,spider) 
+        values (now(),'full_load')""")
+        self.curr.execute("""delete from insider_trades.trades where date is null; """)
+        print('post processing complete')
         self.conn.commit()

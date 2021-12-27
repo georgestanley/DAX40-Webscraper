@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = 'insidertrading.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'insidertrading (+http://www.yourdomain.com)'
+USER_AGENT = 'for educational purpose by <Stanley George> george@tf.uni-freiburg.de'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True

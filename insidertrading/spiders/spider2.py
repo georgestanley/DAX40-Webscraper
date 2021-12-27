@@ -10,7 +10,7 @@ class InsiderSpiderSpider2(scrapy.Spider):
         self.create_connection()
         self.read_data()
         for company in self.companies:
-            print('Company dict=',company)
+            #print('Company dict=',company)
             yield scrapy.Request(company['weblink'],callback=self.insider_data,meta={'company_id':company['company_id']})
     
     def read_data(self):

@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'insidertrading.spiders'
 USER_AGENT = 'for educational purpose by <Stanley George> george@tf.uni-freiburg.de'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

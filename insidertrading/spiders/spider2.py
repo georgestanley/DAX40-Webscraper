@@ -8,12 +8,20 @@ class InsiderSpiderSpider2(scrapy.Spider):
     allowed_domains = ['finanzen.net']
 
     def start_requests(self):
+        
         self.create_connection()
         self.read_data()
         for company in self.companies:
             #print('Company dict=',company)
-            #yield scrapy.Request(company['weblink'],callback=self.insider_data,meta={'company_id':company['company_id']})
-            yield scrapy.Request('https://www.finanzen.net/insidertrades/adidas',callback=self.insider_data,meta={'company_id':1})
+            self.xxx = None
+            yield scrapy.Request(company['weblink'],
+                                callback=self.insider_data,
+                                meta={'company_id':company['company_id'], 'weblink':company['weblink']})
+            
+            #if (company['company_id']==2):
+                #return
+            #yield scrapy.Request('https://www.finanzen.net/insidertrades/adidas',callback=self.insider_data,meta={'company_id':1,
+            #'weblink':'https://www.finanzen.net/insidertrades/adidas'})
     
     def read_data(self):
         self.curr.execute("select company_id,insider_trades_weblink from insider_trades.companies")
@@ -55,3 +63,24 @@ class InsiderSpiderSpider2(scrapy.Spider):
             except Exception as e:
                 print('Error encountered. Pls check')
                 print(e)
+        if self.xxx is None:    
+            self.xxx = response.css('div.paging.clear-block.clearfix a::text').extract()
+
+        """
+        print('xxx=',self.xxx)
+        if len(self.xxx)>0:
+            next_page = response.meta.get('weblink')+'@intpagenr_'+self.xxx[0]
+            print('next_page=',next_page)
+            yield response.follow(next_page,callback=self.insider_data,meta={'company_id':company['company_id'], 'weblink':company['weblink']})
+            self.xxx.pop(0)
+        """
+
+        next_page= response.css('div.paging.clear-block.clearfix a.imageButtonRight::attr(href)').extract_first()
+        print('next_page=',next_page)        
+        if next_page is not None:
+            yield response.follow(next_page,callback=self.insider_data, meta= {'company_id':response.meta.get('company_id')})
+
+
+#https://www.finanzen.net/insidertrades/adidas@intpagenr_2
+#https://www.finanzen.net/insidertrades/volkswagen_vz
+ #response.css('div.paging.clear-block.clearfix a::text').extract()   

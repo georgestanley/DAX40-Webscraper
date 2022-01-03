@@ -41,8 +41,8 @@ class InsidertradingPipeline:
             company_id INT,
             date text,
             trader text,
-            quantity text,
-            short_val text,
+            quantity INT,
+            short_val FLOAT,
             type text,
             created_at timestamp)""")    
 
@@ -67,6 +67,20 @@ class InsidertradingPipeline:
         self.conn.commit()
     
     def store_db_trades(self, item):
+        print("""insert into trades (company_id,
+            date,
+            trader ,
+            quantity ,
+            short_val,
+            type,
+            created_at)values (%s,%s,%s,%s,%s,%s,now())""",(
+            item['company_id'],
+            item['date'],
+            item['trader'],
+            item['quantity'].replace('.',''),
+            item['short_val'].replace(',','.'),
+            item['type']
+        ))
         self.curr.execute("""insert into trades (company_id,
             date,
             trader ,
@@ -78,10 +92,12 @@ class InsidertradingPipeline:
             item['company_id'],
             item['date'],
             item['trader'],
-            item['quantity'],
-            item['short_val'],
+            item['quantity'].replace('.',''),
+            item['short_val'].replace(',','.'),
             item['type']
         ) )
+
+  
         self.conn.commit()
     
     def post_processing(self):

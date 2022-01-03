@@ -13,8 +13,8 @@ class InsiderSpiderSpider3(scrapy.Spider):
         self.read_data()
         for company in self.companies:
             #print('Company dict=',company)
-            #yield scrapy.Request(company['weblink'],callback=self.insider_data,meta={'company_id':company['company_id']})
-            yield scrapy.Request('https://www.finanzen.net/insidertrades/covestro',callback=self.insider_data,meta={'company_id':10})
+            yield scrapy.Request(company['weblink'],callback=self.insider_data,meta={'company_id':company['company_id']})
+            #yield scrapy.Request('https://www.finanzen.net/insidertrades/covestro',callback=self.insider_data,meta={'company_id':10})
     
     def read_data(self):
         self.curr.execute("select company_id,insider_trades_weblink from insider_trades.companies")
@@ -49,7 +49,7 @@ class InsiderSpiderSpider3(scrapy.Spider):
                 v_date = row.xpath('td[1]//text()').extract_first()
                 print(v_date)
                 v_date = datetime.strptime(v_date, '%d.%m.%y')
-                if v_date > self.last_executed_at-timedelta(days=10):
+                if v_date > self.last_executed_at:
                     i_inside_trade['company_id']=response.meta.get('company_id')
                     i_inside_trade['date']=v_date
                     i_inside_trade['trader']=row.xpath('td[2]//text()').extract_first()
